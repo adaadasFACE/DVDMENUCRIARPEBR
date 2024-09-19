@@ -1,6 +1,7 @@
 import tkinter as tk
 from dvd_menu_app import DVDMenuApp
 from tkinter import filedialog
+from dvd_creation import DVDCreation  # Certifique-se de que o módulo está disponível
 
 class DVDMenuGUI:
     def __init__(self, root):
@@ -28,6 +29,10 @@ class DVDMenuGUI:
         preview_button = tk.Button(root, text="Preview Menu", command=self.preview_menu)
         preview_button.pack(pady=10)
 
+        # Botão para gravar o DVD
+        burn_button = tk.Button(root, text="Burn DVD", command=self.burn_dvd)
+        burn_button.pack(pady=10)
+
     def import_videos(self):
         # Função para importar vídeos
         video_files = filedialog.askopenfilenames(title="Select Videos", filetypes=[("Video Files", "*.mp4;*.avi;*.mkv")])
@@ -54,6 +59,14 @@ class DVDMenuGUI:
             self.app.preview_menu(self.app.menu_structure)
         else:
             print("Menu not created yet.")
+
+    def burn_dvd(self):
+        # Função para gravar o DVD
+        if hasattr(self.app, 'videos') and self.app.videos:
+            dvd_creator = DVDCreation(self.app.videos)
+            dvd_creator.burn_dvd()
+        else:
+            print("No videos selected for DVD creation.")
 
 if __name__ == "__main__":
     root = tk.Tk()
